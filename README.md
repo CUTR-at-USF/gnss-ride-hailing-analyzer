@@ -1,36 +1,50 @@
 # GNSS Ride Hailing Analyser [![Java CI with Maven](https://github.com/CUTR-at-USF/gnss-ride-hailing-analyzer/actions/workflows/maven.yml/badge.svg)](https://github.com/CUTR-at-USF/gnss-ride-hailing-analyzer/actions/workflows/maven.yml)
 
-Java Application for analysing GPS data points and additional datasets for identifying ride sharing and ride hailing trips. 
+Java Application for analysing GPS data points and additional datasets for identifying ride sharing and ride hailing trips.
 
 ## Datasets
 
-The application currently supports two different data inputs:
-1. GNSS data traces (potentially from a variety of modes of transportation)
-2. Ride-hailing data
+The application currently supports the Chicago Ride Hailing Data.
 
 The ultimate goal is to use the ride-hailing ground-truth data to identify ride-hailing trips in the raw GNSS traces.
 
-The preliminary GNSS data traces are collected using the [GPSTest](https://github.com/barbeau/gpstest) app. 
+The preliminary ride-hailing data is from
+the [Chicago open TNC dataset](https://data.cityofchicago.org/Transportation/Transportation-Network-Providers-Trips/m6dm-c72p/data):
 
-The GPSTest datasets are stored as two variations: 
-* gnss_log_2021_02_05_13_20_58.txt (Fetched as is from the app)
-* gnss_log_2021_02_05_13_20_58_beans.txt (Modified to directly map the headers to the model class)
-
-The preliminary ride-hailing data is from the [Chicago open TNC dataset](https://data.cityofchicago.org/Transportation/Transportation-Network-Providers-Trips/m6dm-c72p/data): 
 * Transportation_Network_Providers_reduced_records.csv (small subset of data)
 
+## Prerequisites
+
+Before building the program, make sure you have the Open Trip Planner installed and running. If you have trouble
+installing the software, follow the steps to run the OTP server:
+
+* Download the OTP Jar file from
+  the [OTP-Maven-Repository](https://repo1.maven.org/maven2/org/opentripplanner/otp/2.0.0/otp-2.0.0-shaded.jar)
+* Make sure you have the GTFS dataset you want to use and the OSM data of the location in the same folder
+* Run the following in your command-line:-
+    ```
+    java -Xmx3G -jar otp-2.0.0-shaded.jar --build --serve path/to/folder
+    ```
+
 ## Build
-To build the application use `mvn clean package` command. This command will create a jar file (i.e., gnss-ride-hailing-analyzer-1.0.0-SNAPSHOT.jar) 
+
+To build the application use `mvn clean package` command. This command will create a jar file (i.e.,
+gnss-ride-hailing-analyzer-1.0.0-SNAPSHOT.jar)
 under the target folder.
 
 ## Run
-To run the application use `java -jar` command. 
 
-The first command-line parameter should be the GPSTest data file path with simple headers, and the 2nd parameter should be the file path of the Chicago dataset, and the 3rd argument is where you want the dataset to be exported to. Note that the 3rd argument is optional: 
+To run the application use `java -jar` command.
+
+The first command-line parameter should be the filename of the Chicago dataset, 2nd parameter should be the folder where
+you'd like to export your GTFS dataset (Optional), and the 3rd parameter should be the number of request you'd like to
+process concurrently (Optional).
 
 ```
-java -jar target/gnss-ride-hailing-analyzer-1.0.0-SNAPSHOT.jar path/to/file/filename1.txt path/to/file/filename2.csv export/to/folder(Optional)
+java -jar target/gnss-ride-hailing-analyzer-1.0.0-SNAPSHOT.jar path/to/file/filename2.csv export/to/folder(Optional) 10(Optional)
 ```
+
+An `output.csv` file will be generated in the project root.
 
 ## License
 ```

@@ -11,8 +11,14 @@ object GtfsUtils {
      * @return returns LocalDateTime object
      */
     @JvmStatic
-     fun getDateFromTimeStamp(timeStamp: String, pattern: String): LocalDateTime {
+    fun getDateFromTimeStamp(timeStamp: String, pattern: String): LocalDateTime {
         val formatter = DateTimeFormatter.ofPattern(pattern)
         return LocalDateTime.parse(timeStamp, formatter)
     }
+
+    @JvmStatic
+    fun latLong(lat: Double, long: Double): String {
+        return "$lat,$long"
+    }
+
 }
